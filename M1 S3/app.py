@@ -48,23 +48,30 @@ def main():
                 nombre = str(input("Digite el nombre del producto ")).strip()
                 cantidad = validar("Digite la cantidad ", 0)
                 precio = validar("Digite el precio ", 0)
-                inventario.agregar_Productos(nombre, cantidad, precio)
-                print("Producto agregado exitosamente")
+                inventario.agregar_producto(nombre, cantidad, precio)
                 pass
             elif opcion == "2":
-                #inventario.mostrar()
+                inventario.mostrar_inventario()
                 pass
             elif opcion == "3":
                 nombre = str(input("Digite el nombre del producto a buscar: ")).strip()
-                p = inventario.buscar_nombre(nombre)
-                p = ""
-                print(p if p else "Producto no encontrado")
+                p = inventario.buscar_producto(nombre)
+                print(p if p else "❌ Producto no encontrado")
             elif opcion == "4":
-                pass
+                nombre = str(input("Nombre del producto a actualizar: "))
+                nuevo_precio = validar("Nuevo precio (0 para no cambiar): ", 0)
+                nueva_cantidad = validar("Nueva cantidad (0 para no cambiar): ", 0)
+                inventario.actualizar_producto(
+                    nombre,
+                    nuevo_precio if nuevo_precio != 0 else None,
+                    nueva_cantidad if nueva_cantidad != 0 else None,
+                )
             elif opcion == "5":
-                pass
+                nombre = input("Nombre del producto a eliminar: ")
+                inventario.eliminar_producto(nombre)
+
             elif opcion == "6":
-                pass
+                inventario.calcular_estadisticas()
             elif opcion == "7":
                 pass
             elif opcion == "8":

@@ -1,6 +1,10 @@
-def validar_datos():
-    
-    pass
+def formato_mensaje(func):
+    """Agrega un mensaje formateado al agregar un producto."""
+    def wrapper(self, *args, **kwargs):
+        resultado = func(self, *args, **kwargs)
+        print("✅ Producto agregado o actualizado correctamente.\n")
+        return resultado
+    return wrapper
 
 #clase usadad para definir los productos
 class Producto:
@@ -23,13 +27,17 @@ class Inventario:
     def __init__(self):
         self.productos = {}
         
-    #@validar_datos
-    #@formato_mensaje
-    
     #Funcion para agregar productos al inventario
+    @formato_mensaje  
     def agregar_Productos(self, nombre, cantidad, precio):
-        nuevo = Producto(nombre, cantidad, precio)
-        self.productos[nombre] = nuevo
+        if nombre in self.productos:
+            # Si ya existe, se actualiza la cantidad
+            self.productos[nombre].cantidad += cantidad
+            # También podrías actualizar el precio si cambió:
+            self.productos[nombre].precio = precio
+        else:
+            nuevo = Producto(nombre, cantidad, precio)
+            self.productos[nombre] = nuevo
     
     #Funcion para mostrar productos existentes
     def mostrar_Productos(self):
