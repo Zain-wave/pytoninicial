@@ -18,7 +18,7 @@ def mostrar_Menu():
 def validar(msg, min=0.0):
     while True:     
         match msg:
-            case "Digite el precio ":
+            case "Digite el precio " | "Nuevo precio (0 para no cambiar): ":
                 try:
                     n = float(input(msg))
                     if n < min:
@@ -27,7 +27,7 @@ def validar(msg, min=0.0):
                     return n
                 except ValueError:
                     print("El dato ingresado es invalido, Intente nuevamente")
-            case "Digite la cantidad ":
+            case "Digite la cantidad " | "Nueva cantidad (0 para no cambiar): ":
                 try:
                     n = int(input(msg))
                     if n < min:
@@ -58,18 +58,21 @@ def main():
                 p = inventario.buscar_producto(nombre)
                 print(p if p else "❌ Producto no encontrado")
             elif opcion == "4":
-                nombre = str(input("Nombre del producto a actualizar: "))
-                nuevo_precio = validar("Nuevo precio (0 para no cambiar): ", 0)
-                nueva_cantidad = validar("Nueva cantidad (0 para no cambiar): ", 0)
-                inventario.actualizar_producto(
-                    nombre,
-                    nuevo_precio if nuevo_precio != 0 else None,
-                    nueva_cantidad if nueva_cantidad != 0 else None,
-                )
+                nombre = str(input("Digite el nombre del producto a actualizar: ")).strip()
+                p = inventario.buscar_producto(nombre)
+                if p:
+                    nuevo_precio = validar("Nuevo precio (0 para no cambiar): ", 0)
+                    nueva_cantidad = validar("Nueva cantidad (0 para no cambiar): ", 0)
+                    inventario.actualizar_producto(
+                        nombre,
+                        nuevo_precio if nuevo_precio != 0 else None,
+                        nueva_cantidad if nueva_cantidad != 0 else None,
+                    )
+                else:
+                    print("❌ Producto no encontrado")
             elif opcion == "5":
                 nombre = input("Nombre del producto a eliminar: ")
                 inventario.eliminar_producto(nombre)
-
             elif opcion == "6":
                 inventario.calcular_estadisticas()
             elif opcion == "7":
