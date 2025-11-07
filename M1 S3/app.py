@@ -85,7 +85,7 @@ def main():
             elif opcion == "7":
                 archivo_inventario.guardar_csv(inventario.productos)
             elif opcion == "8":
-                archivo_inventario.cargar_json()
+                inventario.productos = archivo_inventario.cargar_json(inventario)
             elif opcion == "9":
                 print("Saliendo del programa.....")
                 break

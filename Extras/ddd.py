@@ -8,4 +8,4 @@ def diamond_pattern(rows: int):
         print(" " * (rows - i) + "*" * (2 * i - 1))
 
 
-diamond_pattern(10)
+diamond_pattern(int(input("cantidad de rows: ")))
