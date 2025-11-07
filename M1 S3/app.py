@@ -1,6 +1,7 @@
 from servicios import Inventario
 from archivos import archivo_inventario
 
+# Menú principal con las opciones disponibles
 menu = {
     1: ("Agregar Producto"),
     2: ("Mostrar Inventario"),
@@ -15,15 +16,17 @@ menu = {
 
 
 def mostrar_Menu():
-    print("\033[33m MENU PRINCIPAL \033[0m".center(50,"="))
+    # Muestro el menu con un formato bonito en color amarillo
+    print("\033[33m MENU PRINCIPAL \033[0m".center(50, "="))
     for i in range(1, len(menu) + 1):
         print(f"{i}. {menu[i]}")
     
 
 
 def validar(msg, min=0.0):
+    # Función para validar las entradas numéricas (precio o cantidad)
     while True:
-        #match-case es el equivalente a switch en python     
+        # match-case es el switch de otros lenguajes
         match msg:
             case "Digite el precio " | "Nuevo precio (0 para no cambiar): ":
                 try:
@@ -34,6 +37,7 @@ def validar(msg, min=0.0):
                     return n
                 except ValueError:
                     print("El dato ingresado es invalido, Intente nuevamente")
+            
             case "Digite la cantidad " | "Nueva cantidad (0 para no cambiar): ":
                 try:
                     n = int(input(msg))
@@ -43,28 +47,36 @@ def validar(msg, min=0.0):
                     return n
                 except ValueError:
                     print("El dato ingresado es invalido, Intente nuevamente")        
-        
+
+
 def main():
+    # Creo una instancia del inventario
     inventario = Inventario()
+
     while True:
         try:
             mostrar_Menu()
             opcion = input("Seleccione una opcion (1-9) ").strip()
             
             if opcion == "1":
+                # Agrego producto nuevo
                 nombre = str(input("Digite el nombre del producto ")).strip()
                 cantidad = validar("Digite la cantidad ", 0)
                 precio = validar("Digite el precio ", 0)
                 inventario.agregar_producto(nombre, cantidad, precio)
-                pass
+
             elif opcion == "2":
+                # Muestro inventario completo
                 inventario.mostrar_inventario()
-                pass
+
             elif opcion == "3":
+                #  Busco producto por nombre
                 nombre = str(input("Digite el nombre del producto a buscar: ")).strip()
                 p = inventario.buscar_producto(nombre)
                 print(p if p else "❌ Producto no encontrado")
+
             elif opcion == "4":
+                # Actualizo los datos de un producto
                 nombre = str(input("Digite el nombre del producto a actualizar: ")).strip()
                 p = inventario.buscar_producto(nombre)
                 if p:
@@ -77,25 +89,39 @@ def main():
                     )
                 else:
                     print("❌ Producto no encontrado")
+
             elif opcion == "5":
+                # Elimino un producto por nombre
                 nombre = input("Nombre del producto a eliminar: ")
                 inventario.eliminar_producto(nombre)
+
             elif opcion == "6":
+                # Muestro las estadísticas del inventario
                 inventario.calcular_estadisticas()
+
             elif opcion == "7":
+                # Guardo el inventario actual en un archivo JSON
                 archivo_inventario.guardar_csv(inventario.productos)
+
             elif opcion == "8":
+                # Cargo productos desde el archivo JSON y los fusiono con el inventario actual si es necesario
                 inventario.productos = archivo_inventario.cargar_json(inventario)
+
             elif opcion == "9":
+                # Salir del programa
                 print("Saliendo del programa.....")
                 break
+
             else:
-                pass
+                # Si se ingresa una opcion que no es valida
+                print("Opción no válida, intente nuevamente.")
+        
         except (Exception, ValueError, KeyboardInterrupt) as e:
-            print (f"\nError: Entrada invalida o interrupcion detectada")
+            # Si ocurre un error 
+            print(f"\nError: Entrada invalida o interrupcion detectada")
             continue
         
         
-        
+# Punto de entrada del programa
 if __name__ == "__main__":
     main()
