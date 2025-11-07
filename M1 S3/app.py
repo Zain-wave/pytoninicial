@@ -1,22 +1,29 @@
 from servicios import Inventario
-#from archivos import ArchivoInventario
+from archivos import archivo_inventario
+
+menu = {
+    1: ("Agregar Producto"),
+    2: ("Mostrar Inventario"),
+    3: ("Buscar Producto"),
+    4: ("Actualizar Producto"),
+    5: ("Eliminar Producto"),
+    6: ("Estadisticas"),
+    7: ("Guardar CSV"),
+    8: ("Cargar CSV"),
+    9: ("Salir"),
+}
+
 
 def mostrar_Menu():
-    print(" MENU PRINCIPAL ".center(50,"="))
-    print("1) Agregar Producto")
-    print("2) Mostrar Inventario")
-    print("3) Buscar Producto")
-    print("4) Actualizar Producto")
-    print("5) Eliminar Producto")
-    print("6) Estadisticas")
-    print("7) Guardar CSV")
-    print("8) Cargar CSV")
-    print("9) Salir")
+    print("\033[33m MENU PRINCIPAL \033[0m".center(50,"="))
+    for i in range(1, len(menu) + 1):
+        print(f"{i}. {menu[i]}")
     
 
 
 def validar(msg, min=0.0):
-    while True:     
+    while True:
+        #match-case es el equivalente a switch en python     
         match msg:
             case "Digite el precio " | "Nuevo precio (0 para no cambiar): ":
                 try:
@@ -76,16 +83,16 @@ def main():
             elif opcion == "6":
                 inventario.calcular_estadisticas()
             elif opcion == "7":
-                pass
+                archivo_inventario.guardar_csv(inventario.productos)
             elif opcion == "8":
-                pass
+                archivo_inventario.cargar_json()
             elif opcion == "9":
                 print("Saliendo del programa.....")
                 break
             else:
                 pass
-        except Exception as e:
-            print (f"Error {e}")
+        except (Exception, ValueError, KeyboardInterrupt) as e:
+            print (f"\nError: Entrada invalida o interrupcion detectada")
             continue
         
         

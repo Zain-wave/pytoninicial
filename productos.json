@@ -1,0 +1,17 @@
+[
+    {
+        "nombre": "Agua",
+        "cantidad": 213123,
+        "precio": 123.0
+    },
+    {
+        "nombre": "COCA",
+        "cantidad": 123123,
+        "precio": 1231.0
+    },
+    {
+        "nombre": "WFAWFWA",
+        "cantidad": 2,
+        "precio": 2.0
+    }
+]
