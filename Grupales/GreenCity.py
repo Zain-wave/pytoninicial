@@ -1,10 +1,10 @@
+import datetime
+
 TARIFA_N = 500 
 TARIFA_P = 750
 PENALIZACION = 2000
 
-FINDE = True 
-
-def realizar_alquiler():
+def realizar_alquiler(FINDE): # Se pasa FINDE como argumento
     while True:
         print("\n--- 🚴 Selección de Bicicleta ---")
         print("1. Estándar ( $ {:.2f} / min )".format(TARIFA_N))
@@ -58,7 +58,6 @@ def realizar_alquiler():
     
     print(mostrar(*datos))
 
-
     
 def calculate(ride: str, payment_method: str, time: int, base_amount: int, day: bool, penalty: int):
     total_cost = base_amount * time
@@ -71,9 +70,11 @@ def calculate(ride: str, payment_method: str, time: int, base_amount: int, day: 
         total_cost -= total_cost * 0.1  # 10% 
     if payment_method == "points" and time < 10:
         pass  # sin cambios
+    
+    # El cálculo del recargo usa el valor dinámico de 'day' (que es FINDE)
     if day:
         surcharge = True
-        total_cost += total_cost * 0.05  # 
+        total_cost += total_cost * 0.05  # 5% de recargo por fin de semana
         
     if time > 120:
         penaltyBool = True
@@ -91,16 +92,47 @@ Con un precio base de: ${base_amount} por minuto\n"""
     if surcharge:
         text += "📅 Recargo por fin de semana: 5%\n"
     if penalty:
-        text += f"⚠️ Penalización por demora: ${PENALIZACION}\n"
+        text += f"⚠️ Penalización por demora: ${PENALIZACION:.2f}\n"
 
     text += f"\n💰 VALOR TOTAL A PAGAR: ${total_cost:.2f}"
     return text
 
 
+def consultar_tarifas(FINDE): # Recibe FINDE para indicar si aplica el recargo
+    """Muestra un resumen de las tarifas y condiciones del servicio de alquiler."""
+    
+    print("\n--- 📄 Tarifas y Condiciones del Servicio 🚴‍♀️ ---")
+    
+    ## 💰 Tarifas Base (Por minuto)
+    print("\n## 💰 Tarifas Base (Por minuto)")
+    print(f"* Bicicleta Estándar: $ {TARIFA_N:.2f}")
+    print(f"* Bicicleta Premium:  $ {TARIFA_P:.2f}")
+    
+    ## 🎁 Descuentos y Recargos
+    print("\n## 🎁 Descuentos y Recargos")
+    print("* **Descuento por Tarjeta:** 10% de descuento si el pago es con **Tarjeta** y el tiempo de uso es de **60 minutos o más**.")
+    
+    # Muestra el estado actual del recargo por fin de semana
+    estado_finde = "APLICA" if FINDE else "NO APLICA"
+    print(f"* **Recargo por Fin de Semana (5%):** Actualmente **{estado_finde}**.")
+    print("* **Pago con Puntos:** No aplica descuentos ni recargos adicionales.")
 
+    ## ⚠️ Penalización por Tiempo
+    print("\n## ⚠️ Penalización por Tiempo")
+    print(f"* Se aplica una **Penalización por Demora** de **$ {PENALIZACION:.2f}** si el tiempo de uso supera los **120 minutos**.")
 
 def main():
     continuar_simulacion = True 
+    hoy = datetime.datetime.now()
+    dia_semana = hoy.weekday() #pone numeros a los dias
+    
+    FINDE = dia_semana >= 5 
+
+    dias = ["Lunes", "Martes", "Miércoles", "Jueves", "Viernes", "Sábado", "Domingo"]
+    nombre_dia = dias[dia_semana]
+    
+    print(f" Hoy es {nombre_dia}. Recargo por fin de semana: {'SÍ (5%)' if FINDE else 'NO (0%)'}")
+    # ----------------------------------------------
 
     # Bucle principal que controla la repetición del programa
     while continuar_simulacion:
@@ -114,7 +146,7 @@ def main():
         opcion = input("Selecciona una opción (1, 2 o 3): ")
 
         if opcion == '1':
-            realizar_alquiler()
+            realizar_alquiler(FINDE) # Se pasa FINDE
             
             # Pregunta de continuación después de finalizar un alquiler
             while True:
@@ -128,7 +160,7 @@ def main():
                     print("**ERROR:** Respuesta no válida. Por favor, ingresa 's' o 'n'.")
                     
         elif opcion == '2':
-            consultar_tarifas()
+            consultar_tarifas(FINDE) # Se pasa FINDE
             
         elif opcion == '3':
             continuar_simulacion = False # Saliendo por opción del menú
