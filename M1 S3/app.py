@@ -24,7 +24,7 @@ def mostrar_Menu():
 
 
 def validar(msg, min=0.0):
-    # Función para validar las entradas numéricas (precio o cantidad)
+    # Funcion para validar las entradas numericas
     while True:
         # match-case es el switch de otros lenguajes
         match msg:
@@ -113,7 +113,7 @@ def main():
                 break
 
             else:
-                # Si se ingresa una opcion que no es valida
+                # Opcion que no es valida
                 print("Opción no válida, intente nuevamente.")
         
         except (Exception, ValueError, KeyboardInterrupt) as e:
@@ -122,6 +122,6 @@ def main():
             continue
         
         
-# Punto de entrada del programa
+# Entrada del programa
 if __name__ == "__main__":
     main()
