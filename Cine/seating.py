@@ -56,10 +56,6 @@ import os
 import msvcrt 
 from typing import List, Dict, Any
 
-# ======================================================================
-# CLASE BASE PARA EL INTERACTOR DE SALA (REEMPLAZA LAS FUNCIONES ANTERIORES)
-# ======================================================================
-
 class SalaDeCine:
 
     FILAS = 10
@@ -78,15 +74,13 @@ class SalaDeCine:
             b'M': 'derecha',
             b'K': 'izquierda'
         }
-        # Lista para guardar los asientos seleccionados (ejemplo: [(0, 0)])
+        # Lista para guardar los asientos seleccionados
         self.asientos_seleccionados = [] 
 
     def _limpiar(self):
-        """Limpia la pantalla."""
         os.system("cls")
 
     def _mostrar_cuadro(self):
-        """Dibuja el cuadro de asientos con el título de la película."""
         self._limpiar()
         print(f"🎥 **{self.titulo}**")
         print("----------------------------------------------------------------------")

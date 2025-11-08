@@ -1,11 +1,7 @@
 import requests
 import json
 
-# --- CONFIGURACIÓN ---
-# ¡IMPORTANTE! Reemplaza esto con tu clave de API real de TMDb (v3)
 API_KEY = "8a85a8773c3f69b24158b496338439c8" 
-
-# Endpoint para obtener las películas populares
 BASE_URL = "https://api.themoviedb.org/3/movie/popular"
 
 # Parámetros de la solicitud
@@ -28,7 +24,7 @@ def obtener_peliculas_populares(limite):
         #paso el json a un diccionario
         data = response.json()
 
-        # 4. Extraer la lista de resultados (películas)
+        # extraigo la lista de resultados
         movies = data.get('results', [])
         #mostrar la cantidad de peliculas que le solicite
         for i, movie in enumerate(movies[:limite]):

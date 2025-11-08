@@ -1,14 +1,24 @@
 class Movie:
-    def __init__(self, nombre, precio, cantidad):
-        # Inicializo los datos básicos del producto
-        self.nombre = nombre
-        self.precio = float(precio)
-        self.cantidad = int(cantidad)
+    def __init__(self, titulo: str, genero: str, sinopsis: str, image: str):
+        # Inicializo los datos básicos de la pelicula
+        self.titulo = titulo
+        self.genero = genero
+        self.sinopsis = sinopsis
+        self.image = image
 
-    def subtotal(self):
-        # Calculo el valor total del producto (precio * cantidad)
-        return self.precio * self.cantidad
 
-    def __str__(self):
-        # Devuelve una cadena con la info del producto para mostrar más fácil
-        return f"{self.nombre} - Precio: ${self.precio:.2f} - Cantidad: {self.cantidad}"
+    def __str__(self) -> str:
+        return (
+            f"🎬 Título: {self.titulo}\n"
+            f"🎭 Género: {self.genero}\n"
+            f"📝 Sinopsis: {self.sinopsis[:100]}... [Ver más]\n"
+            f"🖼️ Imagen: {self.image}"
+        )
+        
+    def to_dict(self) -> dict:
+        return {
+            "titulo": self.titulo,
+            "genero": self.genero,
+            "sinopsis": self.sinopsis,
+            "image": self.image
+        }

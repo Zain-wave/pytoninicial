@@ -1,41 +1,49 @@
 from api import obtener_peliculas_populares
 from seating import SalaDeCine
+from movies import Movie
 
-#Menu inicial
-start = {
-    1: ("Administrador"),
-    2: ("Empleado"),
-    3: ("Salir")
-}
-
-def menu_start():
-    for i in range(1, len(start) + 1):
-        print(f"{i}. {start[i]}")
-
-# Menu administrador
-admin = {
-    1: ("Agregar pelicula"),
-    2: ("Modificar pelicula"),
-    3: ("Eliminar pelicula"),
-    4: ("Estadisticas"),
-    4: ("Salir"),
-}
-# Menu empleado
-employee = {
-    1: ("Comprar boletos"),
-    2: ("Cambiar boletos"),
-    3: ("Reembolso"),
-    4: ("Lista peliculas"),
-    5: ("Salir"),
-}
+from menu_manager import iniciar_programa
 
 
+def crear_objetos_peliculas(datos_peliculas: list) -> list:
+    lista_objetos_peliculas = []
+    for datos in datos_peliculas:
+        pelicula_obj = Movie(
+            titulo=datos.get("original_title", "Título Desconocido"),
+            genero=datos.get("genre_ids", "Sin Género"),
+            sinopsis=datos.get("overview", "Sin sinopsis disponible."),
+            image=datos.get("backdrop_path" or "poster_pat", "No Image URL")
+        )
+        lista_objetos_peliculas.append(pelicula_obj)
+    return lista_objetos_peliculas
 
 def main():
     #seating()
-    #lista_peliculas = obtener_peliculas_populares(10)
-    sala = SalaDeCine("Interstellar")
-    sala.seleccionar_asientos()
+    
+    datos_peliculas = obtener_peliculas_populares(10)
+    lista_objetos_peliculas = crear_objetos_peliculas(datos_peliculas)
+    
+    iniciar_programa(lista_objetos_peliculas)
+    
+    # datos_peliculas = obtener_peliculas_populares(10)
+    
+    # lista_objetos_peliculas = []
+    # for datos in datos_peliculas:
+    #     # Aquí creamos el objeto Movie usando los datos del diccionario
+    #     pelicula_obj = Movie(
+    #         titulo=datos.get("original_title", "Título Desconocido"),
+    #         genero=datos.get("genre_ids", "Sin Género"),
+    #         sinopsis=datos.get("overview", "Sin sinopsis disponible."),
+    #         image=datos.get("backdrop_path" or "poster_pat", "No Image URL")
+    #     )
+    #     lista_objetos_peliculas.append(pelicula_obj)
+        
+    # if lista_objetos_peliculas:
+    #     print("\n--- Primer Objeto Movie Creado ---")
+    #     print(lista_objetos_peliculas[0])
+    #     print(lista_objetos_peliculas[1])
+    #     print("----------------------------------\n")    #sala = SalaDeCine("Interstellar")
+    # #sala.seleccionar_asientos()
     
 if __name__ == "__main__":
     main()
