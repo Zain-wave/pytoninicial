@@ -101,7 +101,6 @@ def consultar_tarifas(FINDE):
     
     print("\n--- 📄 Tarifas y Condiciones del Servicio 🚴‍♀️ ---")
     
-
     print("\n## 💰 Tarifas Base (Por minuto)")
     print(f"* Bicicleta Estándar: $ {TARIFA_N:.2f}")
     print(f"* Bicicleta Premium:  $ {TARIFA_P:.2f}")
@@ -113,7 +112,6 @@ def consultar_tarifas(FINDE):
     print(f"* **Recargo por Fin de Semana (5%):** Actualmente **{estado_finde}**.")
     print("* **Pago con Puntos:** No aplica descuentos ni recargos adicionales.")
 
-    ## ⚠️ Penalización por Tiempo
     print("\n## ⚠️ Penalización por Tiempo")
     print(f"* Se aplica una **Penalización por Demora** de **$ {PENALIZACION:.2f}** si el tiempo de uso supera los **120 minutos**.")
 

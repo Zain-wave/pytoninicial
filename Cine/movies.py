@@ -1,6 +1,5 @@
 class Movie:
     def __init__(self, titulo: str, genero: str, sinopsis: str, image: str):
-        # Inicializo los datos básicos de la pelicula
         self.titulo = titulo
         self.genero = genero
         self.sinopsis = sinopsis

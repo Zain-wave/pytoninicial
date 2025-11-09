@@ -48,8 +48,6 @@ def _obtener_opcion(rango_max: int) -> int:
 # --------------------------------------------------------------------------------------------------------------------
 
 def _comprar_boletos_flow(peliculas_obj_list: list):
-    """Muestra la lista de películas, pide la selección y abre la sala de cine."""
-    
     if not peliculas_obj_list:
         print("⚠️ No hay películas cargadas para la venta de boletos. Volviendo en 3 segundos...")
         time.sleep(3) 
@@ -92,7 +90,7 @@ def menu_administrador_flow():
         _mostrar_menu(ADMIN_MENU, "Menú Administrador")
         opcion = _obtener_opcion(len(ADMIN_MENU))
         
-        if opcion == 5: # Volver al menú principal
+        if opcion == 5:
             break
         
         print(f"🛠️ [Admin] Seleccionaste: {ADMIN_MENU[opcion]}. Lógica a implementar.")
@@ -104,10 +102,10 @@ def menu_empleado_flow(peliculas_obj_list: list):
         _mostrar_menu(EMPLOYEE_MENU, "Menú Empleado")
         opcion = _obtener_opcion(len(EMPLOYEE_MENU))
         
-        if opcion == 5: # Volver al menú principal
+        if opcion == 5:
             break
         
-        if opcion == 1: # 👈 Opción "Comprar boletos"
+        if opcion == 1:
             print(f"🎟️ Seleccionaste: {EMPLOYEE_MENU[opcion]}")
             _comprar_boletos_flow(peliculas_obj_list) 
         else:

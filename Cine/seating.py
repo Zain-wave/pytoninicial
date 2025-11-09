@@ -62,7 +62,6 @@ class SalaDeCine:
     COLUMNAS = 10
 
     def __init__(self, titulo_pelicula: str, filas: int = FILAS, columnas: int = COLUMNAS):
-        """Inicializa la sala con el título de la película."""
         self.titulo = titulo_pelicula
         self.filas = filas
         self.columnas = columnas
