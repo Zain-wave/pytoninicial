@@ -4,7 +4,7 @@ TARIFA_N = 500
 TARIFA_P = 750
 PENALIZACION = 2000
 
-def realizar_alquiler(FINDE): # Se pasa FINDE como argumento
+def realizar_alquiler(FINDE):
     while True:
         print("\n--- 🚴 Selección de Bicicleta ---")
         print("1. Estándar ( $ {:.2f} / min )".format(TARIFA_N))
@@ -69,9 +69,7 @@ def calculate(ride: str, payment_method: str, time: int, base_amount: int, day: 
         discount = True
         total_cost -= total_cost * 0.1  # 10% 
     if payment_method == "points" and time < 10:
-        pass  # sin cambios
-    
-    # El cálculo del recargo usa el valor dinámico de 'day' (que es FINDE)
+        pass  
     if day:
         surcharge = True
         total_cost += total_cost * 0.05  # 5% de recargo por fin de semana
@@ -98,21 +96,19 @@ Con un precio base de: ${base_amount} por minuto\n"""
     return text
 
 
-def consultar_tarifas(FINDE): # Recibe FINDE para indicar si aplica el recargo
+def consultar_tarifas(FINDE):
     """Muestra un resumen de las tarifas y condiciones del servicio de alquiler."""
     
     print("\n--- 📄 Tarifas y Condiciones del Servicio 🚴‍♀️ ---")
     
-    ## 💰 Tarifas Base (Por minuto)
+
     print("\n## 💰 Tarifas Base (Por minuto)")
     print(f"* Bicicleta Estándar: $ {TARIFA_N:.2f}")
     print(f"* Bicicleta Premium:  $ {TARIFA_P:.2f}")
     
-    ## 🎁 Descuentos y Recargos
     print("\n## 🎁 Descuentos y Recargos")
     print("* **Descuento por Tarjeta:** 10% de descuento si el pago es con **Tarjeta** y el tiempo de uso es de **60 minutos o más**.")
     
-    # Muestra el estado actual del recargo por fin de semana
     estado_finde = "APLICA" if FINDE else "NO APLICA"
     print(f"* **Recargo por Fin de Semana (5%):** Actualmente **{estado_finde}**.")
     print("* **Pago con Puntos:** No aplica descuentos ni recargos adicionales.")
@@ -134,7 +130,6 @@ def main():
     print(f" Hoy es {nombre_dia}. Recargo por fin de semana: {'SÍ (5%)' if FINDE else 'NO (0%)'}")
     # ----------------------------------------------
 
-    # Bucle principal que controla la repetición del programa
     while continuar_simulacion:
         
         # Menú Principal
@@ -146,7 +141,7 @@ def main():
         opcion = input("Selecciona una opción (1, 2 o 3): ")
 
         if opcion == '1':
-            realizar_alquiler(FINDE) # Se pasa FINDE
+            realizar_alquiler(FINDE) 
             
             # Pregunta de continuación después de finalizar un alquiler
             while True:
@@ -155,12 +150,12 @@ def main():
                     continuar_simulacion = False # Salida del menu
                     break
                 elif otra_vez == 's':
-                    break # Vuelve al menú principal
+                    break 
                 else:
                     print("**ERROR:** Respuesta no válida. Por favor, ingresa 's' o 'n'.")
                     
         elif opcion == '2':
-            consultar_tarifas(FINDE) # Se pasa FINDE
+            consultar_tarifas(FINDE) 
             
         elif opcion == '3':
             continuar_simulacion = False # Saliendo por opción del menú
@@ -168,6 +163,6 @@ def main():
         else:
             print("**ERROR:** Opción no válida. Por favor, selecciona 1, 2 o 3.")
 
-# Ejecución de la función principal
+
 if __name__ == "__main__":
     main()
