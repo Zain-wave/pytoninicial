@@ -31,7 +31,7 @@ class archivo_inventario:
             # Mensaje verde cuando todo sale bien
             print("\033[32mInventario guardado correctamente en productos.json\033[0m")
             
-        except (Exception, ValueError, KeyboardInterrupt) as e:
+        except (Exception, ValueError, KeyboardInterrupt):
             # Si algo falla (error o Ctrl + C), muestro mensaje en rojo
             print(f"\n\033[31mError: Entrada invalida o interrupcion detectada\033[0m")
 

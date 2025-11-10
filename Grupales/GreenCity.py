@@ -4,11 +4,12 @@ TARIFA_N = 500
 TARIFA_P = 750
 PENALIZACION = 2000
 
+#Funcion para realizar el alquiler
 def realizar_alquiler(FINDE):
     while True:
         print("\n--- 🚴 Selección de Bicicleta ---")
-        print("1. Estándar ( $ {:.2f} / min )".format(TARIFA_N))
-        print("2. Premium ( $ {:.2f} / min )".format(TARIFA_P))
+        print(f"1. Estándar ${TARIFA_N}")
+        print(f"2. Premium ${TARIFA_P}")
         opcion_bici = input("Elige el tipo de bicicleta (1 o 2): ")
         
         if opcion_bici == '1':
@@ -29,9 +30,9 @@ def realizar_alquiler(FINDE):
             if tiempo_uso > 0:
                 break
             else:
-                print("❌ Ingresa un numero positivo/entero")
+                print("Ingresa un numero positivo/entero")
         except ValueError:
-            print("❌ Debe ingresar numeros")
+            print("Debe ingresar numeros")
             
     metodo_pago = "" 
     while True:
@@ -51,7 +52,7 @@ def realizar_alquiler(FINDE):
             metodo_pago = "points"
             break
         else:
-            print("**ERROR:** Opción de pago no válida.")
+            print("Opción de pago no válida.")
             
     # Calcular total
     datos = calculate(tipo_bicicleta, metodo_pago, tiempo_uso, costo_por_minuto, FINDE, PENALIZACION)
@@ -86,34 +87,34 @@ def mostrar(ride, time, base_amount, discount, penalty, surcharge, total_cost):
 El tiempo de uso fue: {time} minutos
 Con un precio base de: ${base_amount} por minuto\n"""
     if discount:
-        text += "✅ Descuento aplicado: 10%\n"
+        text += "Descuento aplicado: 10%\n"
     if surcharge:
-        text += "📅 Recargo por fin de semana: 5%\n"
+        text += "Recargo por fin de semana: 5%\n"
     if penalty:
-        text += f"⚠️ Penalización por demora: ${PENALIZACION:.2f}\n"
+        text += f"Penalización por demora: ${PENALIZACION}\n"
 
-    text += f"\n💰 VALOR TOTAL A PAGAR: ${total_cost:.2f}"
+    text += f"\nVALOR TOTAL A PAGAR: ${total_cost}"
     return text
 
 
 def consultar_tarifas(FINDE):
-    """Muestra un resumen de las tarifas y condiciones del servicio de alquiler."""
+
+    print("\n Tarifas y Condiciones del Servicio")
     
-    print("\n--- 📄 Tarifas y Condiciones del Servicio 🚴‍♀️ ---")
+    print("\n Tarifas Base (Por minuto)")
+    print(f"* Bicicleta Estándar: ${TARIFA_N}")
+    print(f"* Bicicleta Premium:  ${TARIFA_P}")
     
-    print("\n## 💰 Tarifas Base (Por minuto)")
-    print(f"* Bicicleta Estándar: $ {TARIFA_N:.2f}")
-    print(f"* Bicicleta Premium:  $ {TARIFA_P:.2f}")
-    
-    print("\n## 🎁 Descuentos y Recargos")
-    print("* **Descuento por Tarjeta:** 10% de descuento si el pago es con **Tarjeta** y el tiempo de uso es de **60 minutos o más**.")
+    print("\n Descuentos y Recargos")
+    print("Descuento por Tarjeta: 10% de descuento si el pago es con **Tarjeta** y el tiempo de uso es de **60 minutos o más**.")
     
     estado_finde = "APLICA" if FINDE else "NO APLICA"
-    print(f"* **Recargo por Fin de Semana (5%):** Actualmente **{estado_finde}**.")
-    print("* **Pago con Puntos:** No aplica descuentos ni recargos adicionales.")
+    print(f"* Recargo por Fin de Semana (5%):** Actualmente *{estado_finde}*.")
+    print("* Pago con Puntos:** No aplica descuentos ni recargos adicionales.")
 
-    print("\n## ⚠️ Penalización por Tiempo")
-    print(f"* Se aplica una **Penalización por Demora** de **$ {PENALIZACION:.2f}** si el tiempo de uso supera los **120 minutos**.")
+    print("\n Penalización por Tiempo")
+    print(f"* Se aplica una **Penalización por Demora** de **$ {PENALIZACION}** si el tiempo de uso supera los **120 minutos**.")
+
 
 def main():
     continuar_simulacion = True 
@@ -127,39 +128,42 @@ def main():
     
     print(f" Hoy es {nombre_dia}. Recargo por fin de semana: {'SÍ (5%)' if FINDE else 'NO (0%)'}")
     # ----------------------------------------------
+    try:
+        while continuar_simulacion:
+            
+            # Menú Principal
+            print("\n 🏠 Menú Principal ")
+            print("1. 🚲 Alquilar Bicicleta")
+            print("2. 📄 Consultar Tarifas")
+            print("3. ❌ Salir del Sistema") 
+            
+            opcion = input("Selecciona una opción (1, 2 o 3): ")
 
-    while continuar_simulacion:
+            if opcion == '1':
+                realizar_alquiler(FINDE) 
+                
+                # Pregunta de continuación después de finalizar un alquiler
+                while True:
+                    otra_vez = input("¿Deseas realizar otro alquiler (s/n)? ").lower()
+                    if otra_vez == 'n':
+                        continuar_simulacion = False # Salida del menu
+                        break
+                    elif otra_vez == 's':
+                        break 
+                    else:
+                        print("Respuesta no válida. Por favor, ingresa 's' o 'n'.")
+                        
+            elif opcion == '2':
+                consultar_tarifas(FINDE) 
+                
+            elif opcion == '3':
+                continuar_simulacion = False # Saliendo por opción del menú
+                
+            else:
+                print("Opción no válida. Por favor, selecciona 1, 2 o 3.")
+    except KeyboardInterrupt:
+        print("No funciona esa tecla canson")
         
-        # Menú Principal
-        print("\n 🏠 Menú Principal ")
-        print("1. 🚲 Alquilar Bicicleta")
-        print("2. 📄 Consultar Tarifas")
-        print("3. ❌ Salir del Sistema") 
-        
-        opcion = input("Selecciona una opción (1, 2 o 3): ")
-
-        if opcion == '1':
-            realizar_alquiler(FINDE) 
-            
-            # Pregunta de continuación después de finalizar un alquiler
-            while True:
-                otra_vez = input("¿Deseas realizar otro alquiler (s/n)? ").lower()
-                if otra_vez == 'n':
-                    continuar_simulacion = False # Salida del menu
-                    break
-                elif otra_vez == 's':
-                    break 
-                else:
-                    print("**ERROR:** Respuesta no válida. Por favor, ingresa 's' o 'n'.")
-                    
-        elif opcion == '2':
-            consultar_tarifas(FINDE) 
-            
-        elif opcion == '3':
-            continuar_simulacion = False # Saliendo por opción del menú
-            
-        else:
-            print("**ERROR:** Opción no válida. Por favor, selecciona 1, 2 o 3.")
 
 
 if __name__ == "__main__":

@@ -1,5 +1,4 @@
 from api import obtener_peliculas_populares
-from seating import SalaDeCine
 from movies import Movie
 
 from menu_manager import iniciar_programa
