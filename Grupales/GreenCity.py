@@ -7,7 +7,7 @@ PENALIZACION = 2000
 #Funcion para realizar el alquiler
 def realizar_alquiler(FINDE):
     while True:
-        print("\n--- 🚴 Selección de Bicicleta ---")
+        print("\n Selección de Bicicleta")
         print(f"1. Estándar ${TARIFA_N}")
         print(f"2. Premium ${TARIFA_P}")
         opcion_bici = input("Elige el tipo de bicicleta (1 o 2): ")
@@ -132,10 +132,10 @@ def main():
         while continuar_simulacion:
             
             # Menú Principal
-            print("\n 🏠 Menú Principal ")
-            print("1. 🚲 Alquilar Bicicleta")
-            print("2. 📄 Consultar Tarifas")
-            print("3. ❌ Salir del Sistema") 
+            print("\n Menú Principal ")
+            print("1. Alquilar Bicicleta")
+            print("2. Consultar Tarifas")
+            print("3. Salir del Sistema") 
             
             opcion = input("Selecciona una opción (1, 2 o 3): ")
 
@@ -160,9 +160,9 @@ def main():
                 continuar_simulacion = False # Saliendo por opción del menú
                 
             else:
-                print("Opción no válida. Por favor, selecciona 1, 2 o 3.")
+                print("\n Opción no válida. Por favor, selecciona 1, 2 o 3.")
     except KeyboardInterrupt:
-        print("No funciona esa tecla canson")
+        print("\n No funciona esa tecla canson")
         
 
 
