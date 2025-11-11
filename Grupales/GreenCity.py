@@ -99,7 +99,7 @@ Con un precio base de: ${base_amount} por minuto\n"""
 
 def consultar_tarifas(FINDE):
 
-    print("\n Tarifas y Condiciones del Servicio")
+    print("\n Tarifas del Servicio")
     
     print("\n Tarifas Base (Por minuto)")
     print(f"* Bicicleta Estándar: ${TARIFA_N}")
@@ -117,7 +117,6 @@ def consultar_tarifas(FINDE):
 
 
 def main():
-    continuar_simulacion = True 
     hoy = datetime.datetime.now()
     dia_semana = hoy.weekday() #pone numeros a los dias
     
@@ -129,10 +128,8 @@ def main():
     print(f" Hoy es {nombre_dia}. Recargo por fin de semana: {'SÍ (5%)' if FINDE else 'NO (0%)'}")
     # ----------------------------------------------
     try:
-        while continuar_simulacion:
-            
-            # Menú Principal
-            print("\n Menú Principal ")
+        while True:
+            print("\n Principal ")
             print("1. Alquilar Bicicleta")
             print("2. Consultar Tarifas")
             print("3. Salir del Sistema") 
@@ -141,13 +138,11 @@ def main():
 
             if opcion == '1':
                 realizar_alquiler(FINDE) 
-                
-                # Pregunta de continuación después de finalizar un alquiler
                 while True:
                     otra_vez = input("¿Deseas realizar otro alquiler (s/n)? ").lower()
                     if otra_vez == 'n':
-                        continuar_simulacion = False # Salida del menu
-                        break
+                        print("¡Gracias por usar el sistema de alquiler!")
+                        return
                     elif otra_vez == 's':
                         break 
                     else:
@@ -157,14 +152,14 @@ def main():
                 consultar_tarifas(FINDE) 
                 
             elif opcion == '3':
-                continuar_simulacion = False # Saliendo por opción del menú
+                print("¡Gracias por usar el sistema de alquiler!")
+                break
                 
             else:
                 print("\n Opción no válida. Por favor, selecciona 1, 2 o 3.")
     except KeyboardInterrupt:
-        print("\n No funciona esa tecla canson")
+        print("\n No funciona esa tecla papi")
         
-
 
 if __name__ == "__main__":
     main()
