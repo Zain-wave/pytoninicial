@@ -150,14 +150,14 @@ def consultar_tarifas(FINDE):
     print(f"* Bicicleta Premium:  ${TARIFA_P}")
 
     print("\n Descuentos y Recargos")
-    print("* Descuento por Tarjeta: 10% de descuento si el pago es con **Tarjeta** y el tiempo de uso es de **60 minutos o más**.")
+    print(" Descuento por Tarjeta: 10% de descuento si el pago es con ´Tarjeta´ y el tiempo de uso es de 60 minutos o más.")
 
     estado_finde = "APLICA" if FINDE else "NO APLICA"
-    print(f"* Recargo por Fin de Semana (5%):** Actualmente *{estado_finde}*.")
-    print("* Pago con Puntos:** No aplica descuentos ni recargos adicionales.")
+    print(f" Recargo por Fin de Semana (5%): Actualmente {estado_finde}.")
+    print(" Pago con Puntos: No aplica descuentos ni recargos adicionales.")
 
     print("\n Penalización por Tiempo")
-    print(f"* Se aplica una **Penalización por Demora de $ {PENALIZACION} si el tiempo de uso supera el tiempo solicitado.")
+    print(f" Se aplica una Penalización por Demora de $ {PENALIZACION} si el tiempo de uso supera el tiempo solicitado.")
 
 
 def main():
