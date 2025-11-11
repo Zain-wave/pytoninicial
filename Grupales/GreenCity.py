@@ -1,17 +1,25 @@
 import datetime
 
-TARIFA_N = 500 
+TARIFA_N = 500
 TARIFA_P = 750
 PENALIZACION = 2000
 
-#Funcion para realizar el alquiler
+# Guardamos: [tipo_bicicleta, costo_por_minuto, metodo_pago, tiempo_SOLICITADO]
+ALQUILER_ACTIVO = []
+
 def realizar_alquiler(FINDE):
+    global ALQUILER_ACTIVO
+    
+    if ALQUILER_ACTIVO:
+        print("\nYa tienes una bicicleta alquilada. Debes DEVOLVERLA primero (Opción 4).")
+        return
+
     while True:
         print("\n Selección de Bicicleta")
         print(f"1. Estándar ${TARIFA_N}")
         print(f"2. Premium ${TARIFA_P}")
         opcion_bici = input("Elige el tipo de bicicleta (1 o 2): ")
-        
+
         if opcion_bici == '1':
             tipo_bicicleta = "Estándar"
             costo_por_minuto = TARIFA_N
@@ -22,26 +30,26 @@ def realizar_alquiler(FINDE):
             break
         else:
             print("Opcion no valida. Por favor, selecciona 1 o 2.")
-            
-    tiempo_uso = 0
+
+    tiempo_solicitado = 0
     while True:
         try:
-            tiempo_uso = int(input("Ingresa el tiempo de uso en minutos: "))
-            if tiempo_uso > 0:
+            tiempo_solicitado = int(input("Ingresa el tiempo de uso SOLICITADO en minutos: "))
+            if tiempo_solicitado > 0:
                 break
             else:
-                print("Ingresa un numero positivo/entero")
+                print("Ingresa un numero positivo/entero.")
         except ValueError:
-            print("Debe ingresar numeros")
-            
-    metodo_pago = "" 
+            print("Debe ingresar números.")
+
+    metodo_pago = ""
     while True:
         print("\n--- Método de Pago ---")
         print("1. Efectivo")
         print("2. Tarjeta")
         print("3. Puntos")
         opcion_pago = input("Selecciona el método de pago (1, 2 o 3): ")
-        
+
         if opcion_pago == '1':
             metodo_pago = "cash"
             break
@@ -54,13 +62,51 @@ def realizar_alquiler(FINDE):
         else:
             print("Opción de pago no válida.")
             
-    # Calcular total
-    datos = calculate(tipo_bicicleta, metodo_pago, tiempo_uso, costo_por_minuto, FINDE, PENALIZACION)
-    
-    print(mostrar(*datos))
+    ALQUILER_ACTIVO = [tipo_bicicleta, costo_por_minuto, metodo_pago, tiempo_solicitado]
+    print(f"\nAlquiler de bicicleta {tipo_bicicleta} registrado por {tiempo_solicitado} minutos.")
+    print("Recuerda DEVOLVERLA (Opción 4) al finalizar para realizar el pago.")
 
+
+def liquidar_alquiler(FINDE):
+    global ALQUILER_ACTIVO
     
-def calculate(ride: str, payment_method: str, time: int, base_amount: int, day: bool, penalty: int):
+    if not ALQUILER_ACTIVO:
+        print("\nNo hay un alquiler activo para pagar. Por favor, realiza un alquiler primero (Opción 1).")
+        return
+
+    tipo_bicicleta, costo_por_minuto, metodo_pago, tiempo_solicitado = ALQUILER_ACTIVO
+    
+
+    tiempo_real_uso = 0
+    print(f"\nEl tiempo solicitado inicialmente fue de: {tiempo_solicitado} minutos.")
+    while True:
+        try:
+            # pedimos el tiempo que la persona realmente uso la cicla
+            tiempo_real_uso = int(input("Ingresa el tiempo REAL de uso en minutos para la devolución: "))
+            if tiempo_real_uso > 0:
+                break
+            else:
+                print("Ingresa un numero positivo/entero.")
+        except ValueError:
+            print("Debe ingresar números.")
+
+    if tiempo_real_uso > tiempo_solicitado:
+        diferencia = tiempo_real_uso - tiempo_solicitado
+        print(f"\n Papi se paso por {diferencia} minutos.")
+    else:
+        print("\n Bicicleta devuelta a tiempo.")
+        
+    datos = calculate(tipo_bicicleta, metodo_pago, tiempo_real_uso, tiempo_solicitado, costo_por_minuto, FINDE, PENALIZACION)
+
+
+    print("\n--- Recibo ---")
+    print(mostrar(*datos))
+    print("--------------------------")
+    
+    ALQUILER_ACTIVO = []
+    print("\nLiquidación completada. Alquiler cerrado.")
+    
+def calculate(ride: str, payment_method: str, time: int, tiempo_solicitado: int, base_amount: int, day: bool, penalty: int):
     total_cost = base_amount * time
     discount = False
     surcharge = False
@@ -68,14 +114,14 @@ def calculate(ride: str, payment_method: str, time: int, base_amount: int, day: 
 
     if payment_method == "card" and time >= 60:
         discount = True
-        total_cost -= total_cost * 0.1  # 10% 
+        total_cost -= total_cost * 0.1  # 10%
     if payment_method == "points" and time < 10:
-        pass  
+        pass
     if day:
         surcharge = True
         total_cost += total_cost * 0.05  # 5% de recargo por fin de semana
-        
-    if time > 120:
+
+    if time > tiempo_solicitado:
         penaltyBool = True
         total_cost += penalty  # penalización
 
@@ -84,82 +130,85 @@ def calculate(ride: str, payment_method: str, time: int, base_amount: int, day: 
 
 def mostrar(ride, time, base_amount, discount, penalty, surcharge, total_cost):
     text = f"""El tipo de bicicleta fue: {ride}
-El tiempo de uso fue: {time} minutos
+El tiempo de uso REAL fue: {time} minutos
 Con un precio base de: ${base_amount} por minuto\n"""
     if discount:
         text += "Descuento aplicado: 10%\n"
     if surcharge:
         text += "Recargo por fin de semana: 5%\n"
     if penalty:
-        text += f"Penalización por demora: ${PENALIZACION}\n"
+        text += f"Penalización por demora (Excedió el tiempo solicitado): ${PENALIZACION}\n"
 
-    text += f"\nVALOR TOTAL A PAGAR: ${total_cost}"
+    text += f"\nVALOR TOTAL A PAGAR: ${total_cost:.2f}" 
     return text
 
-
 def consultar_tarifas(FINDE):
-
     print("\n Tarifas del Servicio")
-    
+
     print("\n Tarifas Base (Por minuto)")
     print(f"* Bicicleta Estándar: ${TARIFA_N}")
     print(f"* Bicicleta Premium:  ${TARIFA_P}")
-    
+
     print("\n Descuentos y Recargos")
-    print("Descuento por Tarjeta: 10% de descuento si el pago es con **Tarjeta** y el tiempo de uso es de **60 minutos o más**.")
-    
+    print("* Descuento por Tarjeta: 10% de descuento si el pago es con **Tarjeta** y el tiempo de uso es de **60 minutos o más**.")
+
     estado_finde = "APLICA" if FINDE else "NO APLICA"
     print(f"* Recargo por Fin de Semana (5%):** Actualmente *{estado_finde}*.")
     print("* Pago con Puntos:** No aplica descuentos ni recargos adicionales.")
 
     print("\n Penalización por Tiempo")
-    print(f"* Se aplica una **Penalización por Demora** de **$ {PENALIZACION}** si el tiempo de uso supera los **120 minutos**.")
+    print(f"* Se aplica una **Penalización por Demora de $ {PENALIZACION} si el tiempo de uso supera el tiempo solicitado.")
 
 
 def main():
     hoy = datetime.datetime.now()
     dia_semana = hoy.weekday() #pone numeros a los dias
-    
-    FINDE = dia_semana >= 5 
+
+    FINDE = dia_semana >= 5
 
     dias = ["Lunes", "Martes", "Miércoles", "Jueves", "Viernes", "Sábado", "Domingo"]
     nombre_dia = dias[dia_semana]
-    
+
     print(f" Hoy es {nombre_dia}. Recargo por fin de semana: {'SÍ (5%)' if FINDE else 'NO (0%)'}")
     # ----------------------------------------------
+
+    opciones = [
+        "\n--- Menu Principal ---",
+        "1. Alquilar Bicicleta",
+        "2. Consultar Tarifas",
+        "3. Salir del Sistema (Solo si no hay alquiler activo)",
+        "4. Devolver Bicicleta (PAGO)"
+    ]
+
     try:
         while True:
-            print("\n Principal ")
-            print("1. Alquilar Bicicleta")
-            print("2. Consultar Tarifas")
-            print("3. Salir del Sistema") 
-            
-            opcion = input("Selecciona una opción (1, 2 o 3): ")
+            for opcion in opciones:
+                print(opcion)
 
-            if opcion == '1':
-                realizar_alquiler(FINDE) 
-                while True:
-                    otra_vez = input("¿Deseas realizar otro alquiler (s/n)? ").lower()
-                    if otra_vez == 'n':
-                        print("¡Gracias por usar el sistema de alquiler!")
-                        return
-                    elif otra_vez == 's':
-                        break 
-                    else:
-                        print("Respuesta no válida. Por favor, ingresa 's' o 'n'.")
-                        
-            elif opcion == '2':
-                consultar_tarifas(FINDE) 
+            seleccion = input("Selecciona una opción (1, 2, 3 o 4): ")
+
+            if seleccion == '1':
+                realizar_alquiler(FINDE)
+
+            elif seleccion == '2':
+                consultar_tarifas(FINDE)
+
+            elif seleccion == '4':
+                liquidar_alquiler(FINDE)
                 
-            elif opcion == '3':
-                print("¡Gracias por usar el sistema de alquiler!")
-                break
-                
+            elif seleccion == '3':
+                if ALQUILER_ACTIVO:
+                    print("\n Debes DEVOLVER y pagar el alquiler activo primero (Opción 4).")
+                    continue 
+                else:
+                    print("Gracias vuelva pronto")
+                    break
+
             else:
-                print("\n Opción no válida. Por favor, selecciona 1, 2 o 3.")
+                print("\n Opción no válida. Por favor, selecciona 1, 2, 3 o 4.")
     except KeyboardInterrupt:
-        print("\n No funciona esa tecla papi")
-        
+        print("\n No funciona esa tecla aquí")
+
 
 if __name__ == "__main__":
     main()
