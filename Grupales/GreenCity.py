@@ -1,32 +1,32 @@
 import datetime
 
-TARIFA_N = 500
-TARIFA_P = 750
-PENALIZACION = 2000
+tarifa_n = 500
+tarifa_p = 750
+penalizacion = 2000
 
 # Guardamos: [tipo_bicicleta, costo_por_minuto, metodo_pago, tiempo_SOLICITADO]
-ALQUILER_ACTIVO = []
+alquiler_activo = []
 
-def realizar_alquiler(FINDE):
-    global ALQUILER_ACTIVO
+def realizar_alquiler(finde):
+    global alquiler_activo
     
-    if ALQUILER_ACTIVO:
+    if alquiler_activo:
         print("\nYa tienes una bicicleta alquilada. Debes DEVOLVERLA primero (Opción 4).")
         return
 
     while True:
-        print("\n Selección de Bicicleta")
-        print(f"1. Estándar ${TARIFA_N}")
-        print(f"2. Premium ${TARIFA_P}")
+        print("\n Selección de Bicicleta".center(50, "="))
+        print(f"1. Estándar ${tarifa_n}")
+        print(f"2. Premium ${tarifa_p}")
         opcion_bici = input("Elige el tipo de bicicleta (1 o 2): ")
 
         if opcion_bici == '1':
             tipo_bicicleta = "Estándar"
-            costo_por_minuto = TARIFA_N
+            costo_por_minuto = tarifa_n
             break
         elif opcion_bici == '2':
             tipo_bicicleta = "Premium"
-            costo_por_minuto = TARIFA_P
+            costo_por_minuto = tarifa_p
             break
         else:
             print("Opcion no valida. Por favor, selecciona 1 o 2.")
@@ -44,8 +44,8 @@ def realizar_alquiler(FINDE):
 
     metodo_pago = ""
     while True:
-        print("\n--- Método de Pago ---")
-        print("1. Efectivo")
+        print("Método de Pago".center(50, "="))
+        print("\n1. Efectivo")
         print("2. Tarjeta")
         print("3. Puntos")
         opcion_pago = input("Selecciona el método de pago (1, 2 o 3): ")
@@ -62,19 +62,19 @@ def realizar_alquiler(FINDE):
         else:
             print("Opción de pago no válida.")
             
-    ALQUILER_ACTIVO = [tipo_bicicleta, costo_por_minuto, metodo_pago, tiempo_solicitado]
+    alquiler_activo = [tipo_bicicleta, costo_por_minuto, metodo_pago, tiempo_solicitado]
     print(f"\nAlquiler de bicicleta {tipo_bicicleta} registrado por {tiempo_solicitado} minutos.")
     print("Recuerda DEVOLVERLA (Opción 4) al finalizar para realizar el pago.")
 
 
-def liquidar_alquiler(FINDE):
-    global ALQUILER_ACTIVO
+def liquidar_alquiler(finde):
+    global alquiler_activo
     
-    if not ALQUILER_ACTIVO:
+    if not alquiler_activo:
         print("\nNo hay un alquiler activo para pagar. Por favor, realiza un alquiler primero (Opción 1).")
         return
 
-    tipo_bicicleta, costo_por_minuto, metodo_pago, tiempo_solicitado = ALQUILER_ACTIVO
+    tipo_bicicleta, costo_por_minuto, metodo_pago, tiempo_solicitado = alquiler_activo
     
 
     tiempo_real_uso = 0
@@ -96,14 +96,14 @@ def liquidar_alquiler(FINDE):
     else:
         print("\n Bicicleta devuelta a tiempo.")
         
-    datos = calculate(tipo_bicicleta, metodo_pago, tiempo_real_uso, tiempo_solicitado, costo_por_minuto, FINDE, PENALIZACION)
+    datos = calculate(tipo_bicicleta, metodo_pago, tiempo_real_uso, tiempo_solicitado, costo_por_minuto, finde, penalizacion)
 
 
-    print("\n--- Recibo ---")
+    print("Recibo".center(50, "="))
     print(mostrar(*datos))
-    print("--------------------------")
+    print("".center(50, "="))
     
-    ALQUILER_ACTIVO = []
+    alquiler_activo = []
     print("\nLiquidación completada. Alquiler cerrado.")
     
 def calculate(ride: str, payment_method: str, time: int, tiempo_solicitado: int, base_amount: int, day: bool, penalty: int):
@@ -137,44 +137,44 @@ Con un precio base de: ${base_amount} por minuto\n"""
     if surcharge:
         text += "Recargo por fin de semana: 5%\n"
     if penalty:
-        text += f"Penalización por demora (Excedió el tiempo solicitado): ${PENALIZACION}\n"
+        text += f"Penalización por demora (Excedió el tiempo solicitado): ${penalizacion}\n"
 
     text += f"\nVALOR TOTAL A PAGAR: ${total_cost:.2f}" 
     return text
 
-def consultar_tarifas(FINDE):
+def consultar_tarifas(finde):
     print("\n Tarifas del Servicio")
 
     print("\n Tarifas Base (Por minuto)")
-    print(f"* Bicicleta Estándar: ${TARIFA_N}")
-    print(f"* Bicicleta Premium:  ${TARIFA_P}")
+    print(f"* Bicicleta Estándar: ${tarifa_n}")
+    print(f"* Bicicleta Premium:  ${tarifa_p}")
 
     print("\n Descuentos y Recargos")
     print(" Descuento por Tarjeta: 10% de descuento si el pago es con ´Tarjeta´ y el tiempo de uso es de 60 minutos o más.")
 
-    estado_finde = "APLICA" if FINDE else "NO APLICA"
+    estado_finde = "APLICA" if finde else "NO APLICA"
     print(f" Recargo por Fin de Semana (5%): Actualmente {estado_finde}.")
     print(" Pago con Puntos: No aplica descuentos ni recargos adicionales.")
 
     print("\n Penalización por Tiempo")
-    print(f" Se aplica una Penalización por Demora de $ {PENALIZACION} si el tiempo de uso supera el tiempo solicitado.")
+    print(f" Se aplica una Penalización por Demora de $ {penalizacion} si el tiempo de uso supera el tiempo solicitado.")
 
 
 def main():
     hoy = datetime.datetime.now()
     dia_semana = hoy.weekday() #pone numeros a los dias
 
-    FINDE = dia_semana >= 5
+    finde = dia_semana >= 5
 
     dias = ["Lunes", "Martes", "Miércoles", "Jueves", "Viernes", "Sábado", "Domingo"]
     nombre_dia = dias[dia_semana]
 
-    print(f" Hoy es {nombre_dia}. Recargo por fin de semana: {'SÍ (5%)' if FINDE else 'NO (0%)'}")
+    print(f" Hoy es {nombre_dia}. Recargo por fin de semana: {'SÍ (5%)' if finde else 'NO (0%)'}")
     # ----------------------------------------------
 
     opciones = [
-        "\n--- Menu Principal ---",
-        "1. Alquilar Bicicleta",
+        " Menu Principal".center(50, "="),
+        "\n1. Alquilar Bicicleta",
         "2. Consultar Tarifas",
         "3. Salir del Sistema (Solo si no hay alquiler activo)",
         "4. Devolver Bicicleta (PAGO)"
@@ -188,16 +188,16 @@ def main():
             seleccion = input("Selecciona una opción (1, 2, 3 o 4): ")
 
             if seleccion == '1':
-                realizar_alquiler(FINDE)
+                realizar_alquiler(finde)
 
             elif seleccion == '2':
-                consultar_tarifas(FINDE)
+                consultar_tarifas(finde)
 
             elif seleccion == '4':
-                liquidar_alquiler(FINDE)
+                liquidar_alquiler(finde)
                 
             elif seleccion == '3':
-                if ALQUILER_ACTIVO:
+                if alquiler_activo:
                     print("\n Debes DEVOLVER y pagar el alquiler activo primero (Opción 4).")
                     continue 
                 else:
