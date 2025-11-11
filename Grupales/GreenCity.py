@@ -15,8 +15,8 @@ def realizar_alquiler(finde):
         return
 
     while True:
-        print("\n Selección de Bicicleta".center(50, "="))
-        print(f"1. Estándar ${tarifa_n}")
+        print(" Selección de Bicicleta ".center(50, "="))
+        print(f"\n1. Estándar ${tarifa_n}")
         print(f"2. Premium ${tarifa_p}")
         opcion_bici = input("Elige el tipo de bicicleta (1 o 2): ")
 
@@ -44,7 +44,7 @@ def realizar_alquiler(finde):
 
     metodo_pago = ""
     while True:
-        print("Método de Pago".center(50, "="))
+        print(" Método de Pago ".center(50, "="))
         print("\n1. Efectivo")
         print("2. Tarjeta")
         print("3. Puntos")
@@ -99,12 +99,12 @@ def liquidar_alquiler(finde):
     datos = calculate(tipo_bicicleta, metodo_pago, tiempo_real_uso, tiempo_solicitado, costo_por_minuto, finde, penalizacion)
 
 
-    print("Recibo".center(50, "="))
-    print(mostrar(*datos))
+    print(" Recibo ".center(50, "="))
+    print(f"\n{mostrar(*datos)}\n")
     print("".center(50, "="))
     
     alquiler_activo = []
-    print("\nLiquidación completada. Alquiler cerrado.")
+    print("\nLiquidación completada. Alquiler cerrado. \n")
     
 def calculate(ride: str, payment_method: str, time: int, tiempo_solicitado: int, base_amount: int, day: bool, penalty: int):
     total_cost = base_amount * time
@@ -173,7 +173,7 @@ def main():
     # ----------------------------------------------
 
     opciones = [
-        " Menu Principal".center(50, "="),
+        " Menu Principal ".center(50, "="),
         "\n1. Alquilar Bicicleta",
         "2. Consultar Tarifas",
         "3. Salir del Sistema (Solo si no hay alquiler activo)",
@@ -185,7 +185,7 @@ def main():
             for opcion in opciones:
                 print(opcion)
 
-            seleccion = input("Selecciona una opción (1, 2, 3 o 4): ")
+            seleccion = input("\n Selecciona una opción (1, 2, 3 o 4): ")
 
             if seleccion == '1':
                 realizar_alquiler(finde)
